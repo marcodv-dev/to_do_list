@@ -1,0 +1,61 @@
+
+.profile-class{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #246779;
+    .main-profile{
+        flex: 0.5;
+        display: flex;
+        width: 60%;
+        margin: auto;
+        justify-content: space-between;
+        padding-bottom: 40px;
+    }
+    .riepilogo{
+        flex: 0.5;
+        background-color: white;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-top: 1px solid black;
+        .riepilogo_numeri{
+            display: flex;
+            .mancanti, .totali, .completate{
+                width: 20%;
+                margin: auto;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                margin-bottom: 40px;
+                padding-top: 30px;
+                padding-bottom: 30px;
+                background-color: white;
+                border: 1px solid black;
+            }
+            .mancanti{
+                color: rgb(234, 25, 25);
+                border-radius: 1em;
+                label{
+                    font-size: 60px;
+                }
+            }
+            .totali{
+                border-radius: 1em;
+                color: black;
+                label{
+                    font-size: 60px;
+                }
+            }
+            .completate{
+                color: rgb(13, 173, 13);
+                border-radius: 1em;
+                label{
+                    font-size: 60px;
+                }
+            }
+        }
+    }
+}

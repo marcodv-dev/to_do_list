@@ -1,0 +1,118 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+body{
+    background-color: white;
+    /*font-family: "Raleway", sans-serif;*/
+    font-family: "Quicksand", sans-serif;
+    font-weight: normal;
+    >*{
+        background-color: white;
+    }
+}
+.Dashboard-class{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    .header{
+        display: flex;
+        justify-content: space-between;
+        justify-items: center;
+        height: 80px;
+        border-bottom: 1px solid black;
+
+        h1{
+            margin: auto 0 auto 40px;
+            max-width: 80%;
+            white-space: nowrap;       /* Non andare a capo */
+            overflow: hidden;          /* Nascondi il testo che esce */
+            text-overflow: ellipsis;
+        }
+        .options{
+            display: flex;
+            justify-items: center;
+            margin-right: 20px;
+            >*>.calendario-b:hover{
+                margin: auto 5px;
+                img{
+                    width: 60px;
+                }
+            }
+            >img{
+                margin: auto 5px;
+                width: 40px;
+                height: 40px;
+                border: 1px solid black;
+                border-radius: 50%;
+                transition: 0.2s ease;
+                object-fit: cover;
+                object-position: center;
+            }
+            >img:hover{
+                width: 50px;
+                height: 50px;
+                margin: auto 0;
+            }
+        }
+    }
+
+    .main{
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+        min-height: 10px;
+        .sezione-1, .sezione-3{
+            background-color: #246779;
+            white-space: nowrap;       /* Non andare a capo */
+            overflow: hidden;
+        }
+        .sezione-2{
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            >*{
+                flex-shrink: 0; /* previene compressione */
+            }
+        }
+        .sezione-3{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-bottom: 20px;
+        }
+    }
+
+    .button-mod{
+        background-color: #246779;
+        padding: 5px 10px;
+        margin: 20px auto 40px;
+        border: 1px solid white;
+        font-size: 20px;
+        color: white;
+        box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        border-radius: 0.5em;
+        transition: 0.2s ease;
+    }
+    .button-mod:disabled{
+        opacity: 0.5;
+    }
+    .button-mod:not(:disabled):hover{
+        padding: 5px 30px;
+    }
+    .button-el{
+        background-color: #246779;
+        padding: 5px 10px;
+        margin: 20px 10px;
+        border: 1px solid white;
+        font-size: 20px;
+        color: white;
+        box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        border-radius: 0.5em;
+        transition: 0.2s ease;
+    }
+    .button-el:hover{
+        margin: 20px 0;
+        padding: 5px 20px;
+    }
+}

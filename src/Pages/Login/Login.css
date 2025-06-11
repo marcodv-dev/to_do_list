@@ -1,0 +1,77 @@
+
+.login-page{
+    height: 100vh;
+    width: 100vw;
+    background-color: #259392;
+}
+.Login-class{
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: white;
+    padding: 20px 60px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    .metodi-accesso{
+        width: 200px;
+        display: flex;
+        margin: auto;
+        justify-content: space-between;
+        padding-bottom: 40px;
+        border-bottom: 1px solid black;
+        img{
+            width: 50px;
+            border: 1px solid black;
+        }
+    }
+    .accesso-alternativo{
+        width: 100%;
+        display: inline-flex;
+        flex-direction: column;
+        *{
+            margin: auto;
+        }
+        input{
+            width: 200px;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 0.75em;
+            border: 1px solid gray;
+            background-color: rgba(0, 0, 0, 0.074);
+            outline-color: black ;
+        }
+        a{
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .accedi-b{
+            width: auto;
+            background-color: #259392;
+            border: 1px solid white;
+            color: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            transition: 0.3s ease;
+        }
+        .accedi-b:hover{
+            background-color: #155251;
+        }
+        .accedi-b:disabled {
+            background-color: #cccccc;
+            color: #666666;
+        }
+
+    }
+    p{
+        text-align: center;
+        margin: 40px 0 40px 0;
+    }
+    .secondo-p{
+        margin: 40px 0 0px 0;
+    }
+    a{
+        color: #16677b;
+    }
+}

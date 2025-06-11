@@ -1,0 +1,87 @@
+
+.calendar{
+    display: flex;
+    .selezionate{
+        display: flex;
+        h2{
+            font-size: 20px;
+            margin: auto;
+        }
+        .button-c{
+            background-color: #494949;
+            color: white;
+            border: 3px solid #93E8FF;
+            margin: auto 10px auto auto;
+            font-size: 16px;
+            padding: 10px 10px;
+            border-radius: 5em;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+        .button-c:hover{
+            padding: 10px 15px;
+            margin-right: 5px;
+        }
+    }
+    .calendario-b{
+        background: none;
+        border: none;
+        margin: auto 10px;
+        transition: 0.2s ease;
+        img{
+            transition: 0.2s ease;
+            width: 50px;
+        }
+    }
+    /* .calendario-b:hover{
+        margin: auto 5px;
+        img{
+            width: 60px;
+        }
+    } */
+}
+.picker{
+    position: absolute;
+    top: 70px; /* distanza dal bottone, puoi regolare */
+    right: 0;
+    z-index: 10;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    >*>*>*{
+        border: 5px solid #246779;
+        >*>.react-datepicker__header {
+            background-color: white;
+            >*{
+                font-size: 18px;
+                >*{color: white;font-weight: bold;font-size: 16px;}
+            }
+            >.react-datepicker__day-names{background-color: #246779;border-radius: 1em;}
+        }
+        >button{
+            display: flex;
+            border-radius: 1em;
+            padding: 10px 30px 30px 30px;
+            background-color: white;
+            transition: 0.2s ease;
+            >span{
+                filter: brightness(0);
+                margin: auto;
+            }
+        }
+        >button:hover{
+            background-color: lightgray;
+        }
+    }
+    *{
+        padding: 5px;
+    }
+    
+    .giorno-evidenziato {
+        padding: 0;
+        margin: 3px !important;
+        border: 2px solid rgba(21, 151, 180, 1);
+        border-radius: 50%;
+        background-color: transparent;
+        color: black;
+        transition: 0.2s ease;
+    }
+}

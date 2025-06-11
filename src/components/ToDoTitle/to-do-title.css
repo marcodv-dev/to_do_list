@@ -1,0 +1,15 @@
+.to-do{
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    border-bottom: 2px solid white;
+    h1{
+        margin: auto;
+        display: block;
+        text-transform: uppercase;
+        font-size: 36px;
+        background-color: white;
+        padding: 5px 20px;
+        border-radius: 2em;
+    }
+}

@@ -1,0 +1,15 @@
+
+.elenco{
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 40px;
+        position: relative;
+    p{
+        position: relative;
+        top: 40%;
+        transform: translateY(-50%);
+        font-size: 40px;
+        text-align: center;
+        opacity: 0.2;
+    }
+}

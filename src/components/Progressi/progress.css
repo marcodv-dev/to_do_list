@@ -1,0 +1,58 @@
+
+.progress{
+    display: flex;
+    flex-direction: column;
+    margin: 020px;
+    input{
+        background-color: #494949;
+        color: white;
+        border: 3px solid #93E8FF;
+        margin: 0 20px 10px auto;
+        font-size: 18px;
+        padding: 5px 20px;
+        border-radius: 5em;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        transition: 0.2s ease;
+        font-family: "Quicksand", sans-serif;
+        font-weight: bold;
+    }
+    input:hover{
+        padding: 5px 25px;
+        margin-right: 15px;
+    }
+    .avanzamento-progressi{
+        background-color: white;
+        h2{
+            background-color: #8B8B8B;
+            color: black;
+            text-transform: uppercase;
+            padding: 10px;
+        }
+        .percent-container{
+            margin: 10px;
+            position: relative;
+            .percentuale{
+                color: rgb(255, 255, 255);
+                position: absolute;
+                top: 50%;
+                left: 10px;
+                transform: translateY(-50%);
+                font-size: 28px;
+            }
+            .percentuale-blocchi{
+                display: grid;
+                grid-template-columns: repeat(100,1fr);
+                height: 50px;
+                border: 1px solid black;
+                .block{
+                    background-color: rgb(198, 198, 198);
+                    height: 100%;
+                }
+                .block.filled{
+                    background-color: rgb(0, 0, 0);
+                }
+            }
+        }
+    }
+    
+}
