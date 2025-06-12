@@ -3,11 +3,33 @@ import './immagine-profilo.css'
 import { useState, useContext } from 'react';
 import { useRef } from 'react';
 import { UserContext } from '../../Contexts/UserContext';
+import Swal from 'sweetalert2';
 
 function Foto_profilo () {
 
     const { foto, setFoto } = useContext(UserContext);
     const [mostraModifica, setMostraModifica] = useState(false);
+
+    const eliminatoSuccesso = () => {
+        Swal.fire({
+            title: 'Eliminato!',
+            text: "Elemento eliminato con successo",
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#246779',
+            confirmButtonText: 'Chiudi',
+        });
+    }
+    const caricatoSuccesso = () => {
+        Swal.fire({
+            title: 'Caricata!',
+            text: "Elemento caricato con successo",
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#246779',
+            confirmButtonText: 'Chiudi',
+        });
+    }
 
     //MODIFICA FOTO--------------------------------------------------------------------------------------------------------
     const modifica = () => {
@@ -24,6 +46,8 @@ function Foto_profilo () {
         const file = e.target.files[0];
         if (file) {
             setFoto(URL.createObjectURL(file));
+            setMostraModifica(false);
+            caricatoSuccesso();
         }
     };
 
@@ -31,7 +55,11 @@ function Foto_profilo () {
 
     //elimina foto
     const elimina_foto = () => {
-        setFoto("/profile_icon.png");
+        if(foto !== "/profile_icon.png"){
+            setFoto("/profile_icon.png");
+            setMostraModifica(false);
+            eliminatoSuccesso();
+        }
     }
 
     //esci modifica foto

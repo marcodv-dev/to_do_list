@@ -18,7 +18,7 @@ function Elenco_attivita ({attivita = [], categoriaAttiva, attivitaCompletate, o
                         categoriaAttiva={categoriaAttiva}
                         checked={!!attivitaCompletate[att.nome]}
                         onToggle={() => onToggleCompletato(att.nome)}
-                        onElimina={() => onEliminaAttivita(att.nome)}
+                        onElimina={(nome) => onEliminaAttivita(nome)}
                         modificaAttivita={() => onModificaAttivita(att.nome)}
                     />
                 ))

@@ -9,12 +9,8 @@
         margin: 40px auto;
         object-fit: cover;
         object-position: center;
-        border: 1px solid white;
+        background-color: white;
         border-radius: 50%;
-        background-color: rgb(32, 32, 32);
-        >*{
-            box-shadow: 0 0 30px rgb(0, 0, 0);
-        }
     }
     .modifica_foto{
         margin: auto;

@@ -1,4 +1,5 @@
 
+import Swal from 'sweetalert2';
 import Calendario from '../Calendario/calendar';
 import './categoria-attuale.css'
 import { useState, useEffect } from 'react';
@@ -8,7 +9,7 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
     const [mostraModale, setMostraModale] = useState(false)
     const [nomeAttivita, setNomeAttivita] = useState('')
     const [dataSelezionata, setDataSelezionata] = useState('')
-    const [categoriaSelezionata, setCategoriaSelezionata] = useState(categoriaAttiva || '')
+    const [categoriaSelezionata, setCategoriaSelezionata] = useState(categoriaAttiva ? categoriaAttiva : '')
 
     // Aggiorna categoria preselezionata nel select quando cambia la prop
     useEffect(() => {
@@ -26,13 +27,29 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
     //button +
     const apriModale = () => {
         setNomeAttivita('')
-        setCategoriaSelezionata(categoriaAttiva || categorieDisponibili[0] || '')
+        // setCategoriaSelezionata(() => { 
+        //     if(categoriaAttiva && categoriaAttiva !== "mancanti")
+        //         return "";
+            
+        // });
+        setCategoriaSelezionata((categoriaAttiva && categoriaAttiva!=="mancanti") || categorieDisponibili[0] || '')
         setMostraModale(true)
     }
     
     const chiudiModale = () => {
         setMostraModale(false)
         setDataSelezionata('')
+    }
+
+    const avviso = (text) => {
+        Swal.fire({
+            title: 'Elementi mancanti!',
+            text: text,
+            icon: 'warning',
+            showCancelButton: false,
+            confirmButtonColor: '#246779',
+            confirmButtonText: 'Chiudi',
+        });
     }
 
     // Quando l'utente conferma, invia i dati al genitore
@@ -47,14 +64,14 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
                     chiudiModale()
                 }
                 else{
-                    alert("Seleziona una data per l'attività!")
+                    avviso("Seleziona una data per l'attività!");
                 }
             } else {
-                alert("Inserisci un nome per l'attività!")
+                avviso("Inserisci un nome per l'attività!");
             }
         }
         else{
-            alert("Crea prima una categoria a cui assegnare questa attività!")
+            avviso("Crea prima una categoria a cui assegnare questa attività!");
         }
     }
 

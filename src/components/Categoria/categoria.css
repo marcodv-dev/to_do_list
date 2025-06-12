@@ -3,16 +3,16 @@
     background-color: #7AC3D8;
     padding: 5px 10px;
     border: 1px solid white;
-    border-radius: 0.5em;
+    border-radius: 0 0 0.5em 0.5em;
     display: flex;
     justify-content: space-between;
-    font-weight: 600;
     h2{
         margin: auto 0;
         margin-left: 10px;
         font-size: 20px;
+        font-weight: 500;
         text-transform: capitalize;
-        max-width: 60%;
+        width: 60%;
         white-space: nowrap;       /* Non andare a capo */
         overflow: hidden;          /* Nascondi il testo che esce */
         text-overflow: ellipsis;
@@ -20,21 +20,19 @@
     .button-d{
         display: flex;
         button{
-            border-radius: 2em;
-            width: 40px;
-            height: 40px;
-            margin: 5px;
+            border: none;
+            background: none;
             transition: 0.2 ease;
-            border: 3px solid black;
             img{
                 width: 20px;
+                margin: 2.5px;
             }
         }
         button:hover{
-            width: 45px;
-            height: 45px;
-            margin: 2.5px;
-            border-color: #246779;
+            img{
+                margin: 0;
+                width: 25px;
+            }
         }
     }
     

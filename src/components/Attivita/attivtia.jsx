@@ -28,7 +28,7 @@ function Activity ({ nome, categoria, data, categoriaAttiva, checked, onToggle, 
                         disabled={checked}
                         style={{ opacity: checked ? 0.4 : 1, pointerEvents: checked ? 'none' : 'auto' }}
                     ><img src="/modification_icon.png" alt="" /></button>
-                    <button className="elimina" onClick={onElimina}><img src="/trash_icon.png" alt="" /></button>
+                    <button className="elimina" onClick={() => onElimina(nome)}><img src="/trash_icon.png" alt="" /></button>
                 </div>
             </div>
         </div>

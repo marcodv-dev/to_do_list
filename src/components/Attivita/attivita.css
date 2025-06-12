@@ -10,33 +10,35 @@
     border-radius: 1em;
     text-transform: capitalize;
     .categoria-activity{
-        margin: 10px 20px 0;
+        margin: 2px 20px 0;
         font-size: 24px;
         display: flex;
         justify-content: space-between;
         h3{
-                max-width: 50%;
-                text-transform: capitalize;
-                white-space: nowrap;       /* Non andare a capo */
-                overflow: hidden;          /* Nascondi il testo che esce */
-                text-overflow: ellipsis;
+            font-size: 22px;
+            max-width: 50%;
+            white-space: nowrap;       /* Non andare a capo */
+            overflow: hidden;          /* Nascondi il testo che esce */
+            text-overflow: ellipsis;
         }
         >*{
             font-weight: 500;
-            margin: auto 0;
+            margin: 0;
+            font-size: 20px;
         }
     }
     .main-activity{
         display: flex;
         justify-content: space-between;
         margin: 0 40px;
-        padding-bottom: 20px;
+        padding-bottom: 10px;
         .sinistra{
-            height: 80px;
+            height: auto;
             display: flex;
             padding-left: 5%;
             width: 60%; 
                 min-width: 60%;
+                margin-bottom: 10px;
             /* input{
                 width: 40px;
                 height: 40px;
@@ -63,11 +65,11 @@
             .check{
                 width: 30px;
                 height: 30px;
-                margin: auto 40px auto 10px;
+                margin: auto 20px auto 10px;
             }
             h2{
                 margin: auto 0;
-                font-size: 40px;
+                font-size: 30px;
                 font-weight: 500; 
                 width: 80%;
                 text-transform: capitalize;
@@ -88,9 +90,9 @@
             button{
                 background: none;
                 border: none;
-                margin: auto 10px;
-                width: 60px;
-                height: 60px;
+                margin: 5px 10px;
+                width: 50px;
+                height: 50px;
                 transition: 0.2s ease;
                 img{
                     width: 100%;
@@ -98,9 +100,9 @@
                 }
             }
             button:hover{
-                width: 70px;
-                height: 70px;
-                margin: auto 5px;
+                width: 60px;
+                height: 60px;
+                margin: 0 5px;
             }
         }
     }

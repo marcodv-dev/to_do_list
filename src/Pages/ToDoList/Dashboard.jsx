@@ -5,6 +5,7 @@ import { useState/*, useEffect*/ } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useContext } from 'react';
 import { UserContext } from '../../Contexts/UserContext.jsx';
+import Swal from 'sweetalert2';
 
 import ToDoTitle from '../../components/ToDoTitle/to-do-title.jsx';
 import Categorie from '../../components/Categorie/categorie.jsx';
@@ -32,6 +33,11 @@ function Dashboard() {
     // CATEGORIE ------------------------------------------------------------------------------------------------------------------------------
 
     const [categoriaSelezionata, setCategoriaSelezionata] = useState(null);
+
+    //controllo
+    // const controllaCategoriaSelezionata = (prop) => {
+    //     if()
+    // }
     
     //aggiungi nuova
     const aggiungiCategoria = (nomeCategoria) => {
@@ -69,26 +75,6 @@ function Dashboard() {
         setnuovoNomeCategoria("");
         setMostraModificaCategoria(false);
     }
-
-    //elimina categoria
-    const [mostraConferma, setMostraConferma] = useState(false);
-
-    const confermaEliminazione = (nome) => {
-        setNomeDaEliminare(nome);
-        setMostraConferma(true);
-    };
-
-    const [nomeDaEliminare, setNomeDaEliminare] = useState(null);
-
-    const procediConEliminazione = () => {
-        eliminaCategoria(nomeDaEliminare); // elimina correttamente
-        setMostraConferma(false);
-        setNomeDaEliminare(null);
-    };
-
-    const annullaEliminazione = () => {
-        setMostraConferma(false);
-    };
     
     const eliminaCategoria = (nomeDaRimuovere) => {
 
@@ -135,14 +121,58 @@ function Dashboard() {
     const [cambiaDataSelezionata, setCambiaDataSelezionata] = useState(null);
 
     const modificaAttivita = (nome,data) => {
+
         setNomeDaModificareAtt(nome);
         setnuovoNomeAtt(nome);
         setCambiaDataSelezionata(data);
         setMostraModificaAtt(true);
+        
+        // Swal.fire({
+        //     title: 'Modifica Attività',
+        //     html:
+        //         `<input id="swal-input1" class="swal2-input" placeholder="Nome attività" value="${nuovoNomeAtt}">` +
+        //         `<label>Seleziona data:</label>
+        //         <input id="swal-input2" type="date" class="swal2-input" value="${cambiaDataSelezionata}">
+        //         <Calendario dataSelezionata={${cambiaDataSelezionata}} setDataSelezionata={${setCambiaDataSelezionata}} nuova={false}/>`,
+        //     focusConfirm: false,
+        //     showCancelButton: true,
+        //     confirmButtonText: 'Conferma',
+        //     cancelButtonText: 'Annulla',
+        //     preConfirm: () => {
+        //         const nome = document.getElementById('swal-input1').value.trim();
+        //         const data = document.getElementById('swal-input2').value;
+
+        //         if (!nome) {
+        //             Swal.showValidationMessage('Il nome è obbligatorio');
+        //             return false;
+        //         }
+        //         if (!data) {
+        //             Swal.showValidationMessage('La data è obbligatoria');
+        //             return false;
+        //         }
+
+        //         return { nome, data };
+        //     }
+        // }).then((result) => {
+        //     if (result.isConfirmed) {
+        //         // Qui aggiorni direttamente la tua attività
+        //         console.log('Nuovo nome:', result.value.nome);
+        //         console.log('Nuova data:', result.value.data);
+
+        //         // Esegui la funzione di modifica passandole i nuovi valori
+        //         setnuovoNomeAtt(result.value.nome);
+        //         setCambiaDataSelezionata(result.value.data);
+        //         confermaModificaAtt(/*result.value.nome, result.value.data*/);
+        //     }
+        // });
+
+
+
+
+
     }
 
     const confermaModificaAtt = () => {
-        console.log("cambiaDataSelezionata: "+cambiaDataSelezionata)
 
         setAttivita(
             attivita.map((att) => {
@@ -185,6 +215,39 @@ function Dashboard() {
         });
     };
 
+    //Conferma eliminazione categoria e attività-------------------------------------------------------------------------------------------------------
+    const handleDelete = (nome, tipo) => {
+        Swal.fire({
+            title: 'Sei sicuro?',
+            text: "Potresti perdere dei dati!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'rgb(191, 0, 0)',
+            cancelButtonColor: '#246779',
+            confirmButtonText: 'Sì, elimina!',
+            cancelButtonText: 'Annulla'
+        }).then((result) => {
+            if (result.isConfirmed) {
+            
+                if(tipo==="categoria")
+                    eliminaCategoria(nome);
+                else if(tipo==="attivita")
+                    eliminaAttivita(nome);
+                eliminatoSuccesso();
+            }
+        });
+    };
+
+    const eliminatoSuccesso = () => {
+        Swal.fire({
+            title: 'Eliminato!',
+            text: "Elemento eliminato con successo",
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#246779',
+            confirmButtonText: 'Chiudi',
+        });
+    }
 
     //Profilo ------------------------------------------------------------------------------------------------------------------------------
     const Profilo = () => {
@@ -192,6 +255,14 @@ function Dashboard() {
         const completateCount = attivitaCompletate ? Object.values(attivitaCompletate).filter(val => val).length : 0;
         navigate("/Profile", { state: {completateCount, att_num} });
     }
+
+
+
+
+
+
+    
+
 
     //------------------------------------------------------------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -218,7 +289,7 @@ function Dashboard() {
                     categorie={categorie}
                     onClickCategoria={(nome) => setCategoriaSelezionata(nome)}
                     onAggiungiCategoria={(x) => aggiungiCategoria(x)}
-                    onRimuoviCategoria={(nome) => confermaEliminazione(nome)}
+                    onRimuoviCategoria={(nome) => handleDelete(nome, "categoria")}
                     onModificaCategoria={(nome) => ModificaCategoria(nome)}
                 />
             </div>
@@ -242,7 +313,6 @@ function Dashboard() {
                                     // Mostra solo attività non completate
                                     return !attivitaCompletate[a.nome];
                                 }
-                                
                                 return (a.categoria || '').trim().toLowerCase() === cat;
                             }
                             else{
@@ -259,7 +329,7 @@ function Dashboard() {
                     categoriaAttiva={categoriaSelezionata}
                     attivitaCompletate={attivitaCompletate}
                     onToggleCompletato={toggleCompletato}
-                    onEliminaAttivita={eliminaAttivita}
+                    onEliminaAttivita={(nome) => handleDelete(nome, "attivita")}
                     onModificaAttivita={(nome,data) => modificaAttivita(nome,data)}
 
                 />
@@ -270,14 +340,15 @@ function Dashboard() {
                 <Progressi 
                     attivita={attivita} 
                     attivitaCompletate={attivitaCompletate} 
-                    onClickCategoria={(nome) => setCategoriaSelezionata(nome)} 
+                    onClickCategoria={(nome) => setCategoriaSelezionata('mancanti')} 
+                    categorie={categorie}
                 />
             </div>
         </div>
 
         {/* MOSTRA CONFERMA  ------------------------------------------------------------------------------------------------------------------------------ */}
 
-            {mostraConferma && (
+            {/* {mostraConferma && (
                 <div className="modale-conferma"
                 style={{
                     width:'100vw',
@@ -310,7 +381,7 @@ function Dashboard() {
                         
                     </div>
                 </div>
-            )}
+            )} */}
 
             {/* MOSTRA MODIFICA  ------------------------------------------------------------------------------------------------------------------------------ */}
             {mostraModificaCategoria && (
@@ -409,6 +480,9 @@ function Dashboard() {
                     </div>
                 </div>
             )}
+
+
+
     </div>
   );
 }

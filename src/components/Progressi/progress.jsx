@@ -2,7 +2,7 @@
 import './progress.css'
 import React from "react";
 
-function progressi ({attivita = [], attivitaCompletate = {}, onClickCategoria}) {
+function progressi ({attivita = [], attivitaCompletate = {}, onClickCategoria, categorie}) {
   
     const totalBlocks = 100;
 
@@ -16,7 +16,8 @@ function progressi ({attivita = [], attivitaCompletate = {}, onClickCategoria}) 
 
     return(
         <div className='progress'>
-            <input type="button" value="Mancanti"  onClick={() => onClickCategoria("mancanti")}/>
+            {categorie.length!==0 && (
+            <input type="button" value="Mancanti"  onClick={() => onClickCategoria("mancanti")}/>)}
             <div className="avanzamento-progressi">
                 <h2>Progressi</h2>
                     
