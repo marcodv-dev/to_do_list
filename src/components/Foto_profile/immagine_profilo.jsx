@@ -5,9 +5,8 @@ import { useRef } from 'react';
 import { UserContext } from '../../Contexts/UserContext';
 import Swal from 'sweetalert2';
 
-function Foto_profilo () {
+function Foto_profilo ( {fotoURL , setFotoURL, email} ) {
 
-    const { foto, setFoto } = useContext(UserContext);
     const [mostraModifica, setMostraModifica] = useState(false);
 
     const eliminatoSuccesso = () => {
@@ -16,8 +15,8 @@ function Foto_profilo () {
             text: "Elemento eliminato con successo",
             icon: 'success',
             showCancelButton: false,
-            confirmButtonColor: '#246779',
-            confirmButtonText: 'Chiudi',
+            showConfirmButton: false,
+            timer: '1000'
         });
     }
     const caricatoSuccesso = () => {
@@ -26,8 +25,8 @@ function Foto_profilo () {
             text: "Elemento caricato con successo",
             icon: 'success',
             showCancelButton: false,
-            confirmButtonColor: '#246779',
-            confirmButtonText: 'Chiudi',
+            showConfirmButton: false,
+            timer: '1000'
         });
     }
 
@@ -44,10 +43,38 @@ function Foto_profilo () {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+        setMostraModifica(false);
         if (file) {
-            setFoto(URL.createObjectURL(file));
-            setMostraModifica(false);
-            caricatoSuccesso();
+            Swal.fire({
+                        title: 'Cambia foto profilo',
+                        text: 'Sicuro di voler cambiare la foto profilo?',
+                        icon: 'question',
+                        focusConfirm: false,
+                        showCancelButton: true,
+                        confirmButtonColor: '#246779',
+                        cancelButtonColor: '#246779',
+                        confirmButtonText: 'Si, cambia',
+                        cancelButtonText: 'Annulla'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const formData = new FormData();
+                            formData.append('foto', file);
+
+                            // Salva la foto localmente per visualizzarla subito
+                            caricatoSuccesso();
+
+                            // Salva la foto nel database
+                            fetch(`http://localhost:3001/utente/foto/${email}`, {
+                                method: 'PUT',
+                                body: formData
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                setFotoURL(data.fotoURL);
+                            })
+                            .catch(err => console.error('Errore durante il salvataggio della foto:', err));
+                        }
+                    });
         }
     };
 
@@ -55,12 +82,40 @@ function Foto_profilo () {
 
     //elimina foto
     const elimina_foto = () => {
-        if(foto !== "/profile_icon.png"){
-            setFoto("/profile_icon.png");
+        if(fotoURL !== ""){
             setMostraModifica(false);
-            eliminatoSuccesso();
-        }
+
+            Swal.fire({
+                title: 'Elimina foto profilo',
+                text: 'Sicuro di voler eliminare la foto profilo?',
+                icon: 'question',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonColor: 'rgb(191,0,0)',
+                cancelButtonColor: '#246779',
+                confirmButtonText: 'Si, elimina',
+                cancelButtonText: 'Annulla'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    setFotoURL("");
+                    eliminatoSuccesso();
+
+                    // Salva la foto predefinita nel database
+                    fetch(`http://localhost:3001/utente/foto/${email}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ foto: '' }) // Puoi decidere di salvare '' o 'profile_icon.png'
+                    })
+                    .then(res => res.json())
+                    //.then(data => console.log(data))
+                    .catch(err => console.error('Errore durante l\'eliminazione della foto:', err));        
+                }
+            });
+
+            
+            }
     }
+    
 
     //esci modifica foto
     const indietro_foto = () => {
@@ -71,9 +126,9 @@ function Foto_profilo () {
     //------------------------------------------------------------------------------------------------------------------------------------------------------
     return (
         <div className="foto">
-            {foto && (
-                <img className="immagine_profilo" src={foto} alt="" />
-            )}
+            {/* {fotoURL && ( */}
+                <img className="immagine_profilo" src={fotoURL ? `http://localhost:3001${fotoURL}` : '/profile_icon.png'} alt="" />
+            {/* )} */}
             <button className="modifica_foto" onClick={modifica}>Modifica foto profilo</button>
             {/* <input type="file" name="foto" id="" /> */}
 
@@ -115,7 +170,7 @@ function Foto_profilo () {
                                 background:'none'
                             }}><img src="x_icon.png" alt="" style={{width:'20px'}}/></button>
                         </div>
-                        {foto && (
+                        {/* {fotoURL && ( */}
                             <img style={{
                             margin:'40px auto',
                             height:'300px',
@@ -123,8 +178,8 @@ function Foto_profilo () {
                             borderRadius:'0.5em',
                             objectFit: 'cover',
                             objectPosition: 'center'
-                        }} src={foto} alt="" />
-                        )}
+                        }} src={fotoURL ? `http://localhost:3001${fotoURL}` : '/profile_icon.png'} alt="" />
+                         {/* )} */}
                         <div style={{
                             display:'flex',
                             }}>

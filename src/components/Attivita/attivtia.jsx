@@ -1,12 +1,18 @@
 
+import { useState } from 'react';
 import './attivita.css'
 
-function Activity ({ nome, categoria, data, categoriaAttiva, checked, onToggle, onElimina, modificaAttivita }) {
+function Activity ({ nome, categoria_id, data, categoriaAttiva, checked, onToggle, onElimina, modificaAttivita, categorie }) {
 
+    const nomeCategoria = categorie.find(cat => cat.id === categoria_id)?.nome || '';
+
+    //const [check_1, setCheck_1] = useState(false);
+    
+    
     return (
         <div className="activity">
             <div className="categoria-activity">
-                <h3>{categoria !== categoriaAttiva? categoria : ''}</h3>
+                <h3>{!categoriaAttiva || categoriaAttiva === 'mancanti'? nomeCategoria : '' }</h3>
                 <label htmlFor="data">{data.toLocaleDateString()}</label>
             </div>
             <div className="main-activity">
@@ -16,9 +22,8 @@ function Activity ({ nome, categoria, data, categoriaAttiva, checked, onToggle, 
                     <input 
                         type="checkbox"
                         className="check"
-                        checked={checked} 
-                        onClick={onToggle}
-                        readOnly
+                        checked={checked}
+                        onChange={onToggle}
                     />
                     <h2 className={checked ? 'barrato' : ''} onClick={onToggle}>{nome}</h2>
                 </div>
@@ -28,7 +33,7 @@ function Activity ({ nome, categoria, data, categoriaAttiva, checked, onToggle, 
                         disabled={checked}
                         style={{ opacity: checked ? 0.4 : 1, pointerEvents: checked ? 'none' : 'auto' }}
                     ><img src="/modification_icon.png" alt="" /></button>
-                    <button className="elimina" onClick={() => onElimina(nome)}><img src="/trash_icon.png" alt="" /></button>
+                    <button className="elimina" onClick={() => onElimina()}><img src="/trash_icon.png" alt="" /></button>
                 </div>
             </div>
         </div>

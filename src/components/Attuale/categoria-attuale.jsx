@@ -9,7 +9,9 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
     const [mostraModale, setMostraModale] = useState(false)
     const [nomeAttivita, setNomeAttivita] = useState('')
     const [dataSelezionata, setDataSelezionata] = useState('')
-    const [categoriaSelezionata, setCategoriaSelezionata] = useState(categoriaAttiva ? categoriaAttiva : '')
+    const [categoriaSelezionata, setCategoriaSelezionata] = useState(categoriaAttiva ? categoriaAttiva : (categorieDisponibili[0] || null))
+
+
 
     // Aggiorna categoria preselezionata nel select quando cambia la prop
     useEffect(() => {
@@ -20,7 +22,7 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
             // Se non c'è categoria attiva, seleziona la prima disponibile
             setCategoriaSelezionata(categorieDisponibili[0]);
         } else {
-            setCategoriaSelezionata(''); // Nessuna categoria disponibile
+            setCategoriaSelezionata(null); // Nessuna categoria disponibile
         }
     }, [categoriaAttiva, categorieDisponibili]);
 
@@ -32,7 +34,7 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
         //         return "";
             
         // });
-        setCategoriaSelezionata((categoriaAttiva && categoriaAttiva!=="mancanti") || categorieDisponibili[0] || '')
+        setCategoriaSelezionata(categoriaAttiva && categoriaAttiva !== "mancanti" ? categoriaAttiva : categorieDisponibili[0] || null)
         setMostraModale(true)
     }
     
@@ -59,9 +61,8 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
             if (nomeAttivita.trim() !== '') {   // se ha inserito un nome per l'attività
 
                 if (dataSelezionata !== '') {   // se ha selezionato una data
-
-                    onAggiungiAttivita(nomeAttivita.trim(), categoriaSelezionata, dataSelezionata)
-                    chiudiModale()
+                    onAggiungiAttivita(nomeAttivita.trim(), categoriaSelezionata, dataSelezionata);
+                    chiudiModale();
                 }
                 else{
                     avviso("Seleziona una data per l'attività!");
@@ -78,7 +79,7 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
 
     return(
         <div className='attuale'>
-            <h1>{categoriaAttiva ? `${categoriaAttiva}` : ''}</h1>
+            <h1>{categoriaAttiva && categoriaAttiva.nome? categoriaAttiva.nome : categoriaAttiva || ''}</h1> 
             <button className="button-plus" onClick={apriModale}><img src="/plus_icon.png" alt="" /></button>
 
 
@@ -128,8 +129,10 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
 
                         {/* Select per categoria (default: categoriaAttuale) */}
                         <select
-                            value={categoriaSelezionata}
-                            onChange={(e) => setCategoriaSelezionata(e.target.value)}
+                            value={categoriaSelezionata? JSON.stringify(categoriaSelezionata) : ''}
+                            onChange={(e) => {
+                                setCategoriaSelezionata(JSON.parse(e.target.value));
+                            }}
                             style={{
                                 width: '50%',
                                 marginBottom: '40px',
@@ -143,8 +146,8 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
                             }}
                         >
                             {categorieDisponibili.map((cat) => (
-                                <option key={cat} value={cat}>
-                                    {cat}
+                                <option key={cat.id} value={JSON.stringify(cat)}>
+                                    {cat.nome}
                                 </option>
                             ))}
                         </select>

@@ -2,13 +2,13 @@
 import './progress.css'
 import React from "react";
 
-function progressi ({attivita = [], attivitaCompletate = {}, onClickCategoria, categorie}) {
+function progressi ({attivita = [], attivitaCompletate, onClickCategoria, categorie}) {
   
     const totalBlocks = 100;
 
     const totale = attivita.length;
 
-    const completate = attivita.filter(att => attivitaCompletate[att.nome]).length;
+    const completate = attivitaCompletate;
 
     //calcolo percentuale e blocchi colorati
     const percentage = totale === 0 ? 0 : Math.round((completate / totale) * 100);

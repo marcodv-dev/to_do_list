@@ -4,7 +4,7 @@ import Categoria from '../../components/Categoria/categoria.jsx'
 import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
 
-function Categorie ({ categorie, onClickCategoria, onAggiungiCategoria, onRimuoviCategoria, onModificaCategoria }) {
+function Categorie ({ categorie, onClickCategoria, onAggiungiCategoria, onRimuoviCategoria, onModificaCategoria, avviso }) {
 
     const aggiungiCategoria = () => {
 
@@ -35,7 +35,7 @@ function Categorie ({ categorie, onClickCategoria, onAggiungiCategoria, onRimuov
                 if (!categorie.includes(nomePulito)) { // se non esiste un'altra con lo stesso nome
                     onAggiungiCategoria(nomePulito);
                 } else {
-                    alert('Questa categoria esiste già!');
+                    avviso('Questa categoria esiste già!');
                 }
             }
         });
@@ -64,13 +64,13 @@ function Categorie ({ categorie, onClickCategoria, onAggiungiCategoria, onRimuov
                     </div>
                 )}
 
-                {categorie.map((nome) => (
-                    <div key={nome} /*onClick={() => onClickCategoria(nome)}*/>
+                {categorie.map((categoria) => (
+                    <div key={categoria.id} /*onClick={() => onClickCategoria(nome)}*/>
                         <Categoria 
-                        nome={nome} 
-                        onElimina={() => onRimuoviCategoria(nome,"categoria")}
-                        onModifica={() => onModificaCategoria(nome)}
-                        onClick={() => onClickCategoria(nome)}
+                        nome={categoria.nome} 
+                        onElimina={() => onRimuoviCategoria(categoria,"categoria")}
+                        onModifica={() => onModificaCategoria(categoria.nome)}
+                        onClick={() => onClickCategoria(categoria)}
                         />
                     </div>
                 ))}

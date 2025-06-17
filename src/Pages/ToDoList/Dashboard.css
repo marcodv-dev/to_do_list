@@ -83,10 +83,16 @@ body{
         }
     }
 
+    .button-mod-d{
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+        margin: auto;
+    }
     .button-mod{
         background-color: #246779;
         padding: 5px 10px;
-        margin: 20px auto 40px;
+        margin: 20px 20px 40px;
         border: 1px solid white;
         font-size: 20px;
         color: white;
@@ -99,6 +105,7 @@ body{
     }
     .button-mod:not(:disabled):hover{
         padding: 5px 30px;
+        margin: 20px 0px 40px;
     }
     .button-el{
         background-color: #246779;

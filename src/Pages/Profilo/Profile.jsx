@@ -4,6 +4,7 @@ import './Profile.css'
 import { useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../../Contexts/UserContext.jsx';
+import { useEffect } from 'react';
 
 import Navbar from '../../components/NavBar_Profile/navbar.jsx';
 import Foto from '../../components/Foto_profile/immagine_profilo.jsx';
@@ -15,7 +16,8 @@ function Profile() {
 
 
     const { username, setUsername } = useContext(UserContext);
-    //const { email, setEmail } = useContext(UserContext);
+    const { fotoURL, setFotoURL } = useContext(UserContext);
+    const { email } = useContext(UserContext);
     const location = useLocation();
 
     //conteggio numero attività
@@ -23,12 +25,28 @@ function Profile() {
     const totali = location.state?.att_num || 0;
     const mancanti = totali - completate;
 
+
+
+    // Carica informazioni utente
+        useEffect(() => {
+            if (email) {
+                fetch(`http://localhost:3001/utente/${encodeURIComponent(email)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        setUsername(data.username);
+                        if(data.foto!=='')
+                            setFotoURL(data.foto);
+                    })
+                    .catch(err => console.error(err));
+            }
+        }, [email]);
+
     return(
         <div className="profile-class">
             <Navbar/>
             <div className="main-profile">
-                <Foto/>
-                <Dati username={username} setUsername={setUsername} /*email={email}*//>
+                <Foto fotoURL={fotoURL} setFotoURL={setFotoURL} email={email}/>
+                <Dati username={username} setUsername={setUsername} email={email}/>
             </div>
             <div className="riepilogo">
                 <h1>Riepilogo attività:</h1>

@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from 'react';
 import { UserContext } from '../../Contexts/UserContext';
 
-import './Login.css'
+import './Registrazione.css'
 
-function Login() {
+function Registration() {
 
   const navigate = useNavigate();
   const { setEmail } = useContext(UserContext);
@@ -24,9 +24,9 @@ function Login() {
   // Condizione per abilitare il bottone
   const isButtonDisabled = !username.trim() || !password.trim();
   
-  const Loggati = () => {
+  const Registrati = () => {
 
-    fetch('http://localhost:3001/login', {  // metti qui l'URL del tuo server backend
+    fetch('http://localhost:3001/register', {  // metti qui l'URL del tuo server backend
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -35,13 +35,11 @@ function Login() {
     })
     .then(res => {
       if (!res.ok) {
-        throw new Error('Credenziali non valide');
+        return res.json().then(err => { throw new Error(err.message); });
       }
       return res.json();
     })
     .then(data => {
-      const user = { email: data.user.email, username: data.user.username };
-      localStorage.setItem('user', JSON.stringify(user));
       setError("");
       setEmail(decodeURIComponent(data.user.email));
       navigate("/Dashboard");
@@ -52,12 +50,12 @@ function Login() {
   };
 
   return (
-    <div className="login-page">
-      <div className="Login-class">
-          <header className="Login-header">
-            <h1>Login</h1>
+    <div className="Register-page">
+      <div className="Register-class">
+          <header className="Register-header">
+            <h1>Registrazione</h1>
           </header>
-          <p>Accedi e porta a termine la tua giornata!</p>
+          <p>Registrati e programma la tua giornata!</p>
           {/* <div class="metodi-accesso">
             <img src="./logo512.png" alt="" />
             <img src="./logo512.png" alt="" />
@@ -69,10 +67,10 @@ function Login() {
             <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
             <a className="link-password-dimenticata" href="a">Password dimenticata?</a>
-            <input className="accedi-b" type="button" value="Accedi"  onClick={Loggati} disabled={isButtonDisabled}/>
+            <input className="accedi-b" type="button" value="Registrati"  onClick={Registrati} disabled={isButtonDisabled}/>
           </div>
           {error && <p style={{color: 'red'}}>{error}</p>}
-          <p>Non hai ancora un account? <a className="link-registrazione" href="##" onClick={(e) => { e.preventDefault(); navigate('/Registration'); }}>Registrati qui!</a></p>
+          <p>Hai già un account? <a className="link-registrazione" href="##" onClick={(e) => { e.preventDefault(); navigate('/'); }}>Accedi qui!</a></p>
       </div>
     </div>
   );
@@ -80,4 +78,4 @@ function Login() {
 
 
 
-export default Login;
+export default Registration;

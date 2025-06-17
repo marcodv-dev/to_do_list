@@ -8,8 +8,7 @@
     margin: auto 30% auto auto;
     label{
         text-align: center;
-        font-size: 40px;
-        text-decoration: underline;
+        font-size: 30px;
         color: white;
     }
     >div{
@@ -49,7 +48,7 @@
     .logout{
         margin: auto;
         font-size: 20px;
-        padding: 5px;
+        padding: 5px 10px;
         color: white;
         background: none;
         border: 1px solid white;
@@ -57,7 +56,9 @@
         transition: 0.3s ease;
     }
     .logout:hover{
-        background-color: rgba(0, 0, 0, 0.3);
-        padding: 5px 10px;
+        background-color: rgb(227, 227, 227);
+        color: black;
+        border-color: black;
+
     }
 }

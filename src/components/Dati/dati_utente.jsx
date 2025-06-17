@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 
-function Dati_utente ({ username, setUsername /*, email */ }) {
+function Dati_utente ({ username, setUsername , email }) {
 
     const navigate = useNavigate();
     const [mostraConferma, setMostraConferma] = useState(false);
@@ -19,7 +19,7 @@ function Dati_utente ({ username, setUsername /*, email */ }) {
             icon: 'question',
             focusConfirm: false,
             showCancelButton: true,
-            confirmButtonColor: '#246779',
+            confirmButtonColor: 'rgb(191, 0, 0)',
             cancelButtonColor: '#246779',
             confirmButtonText: 'Si, esci',
             cancelButtonText: 'Annulla'
@@ -39,9 +39,30 @@ function Dati_utente ({ username, setUsername /*, email */ }) {
         }
     }
 
+    const cambiaUsername = () => {
+        fetch(`http://localhost:3001/utente/aggiorna/${encodeURIComponent(email)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: nuovoUsername })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Errore nella modifica');
+            }
+            return response.json();
+        })
+        .then(() => {
+            successo('Username aggiornato con successo!');
+        })
+        .catch((error) => {
+            console.error(error);
+            avviso('Errore durante l\'aggiornamento dell\'utente.');
+        });
+    }
+
     const confermaUsername = () => {
         Swal.fire({
-            text: "Confermi di voler cambiare il tuo Username?",
+            text: "Sicuro di voler cambiare il tuo Username?",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#246779',
@@ -51,6 +72,8 @@ function Dati_utente ({ username, setUsername /*, email */ }) {
         }).then((result) => {
             if (result.isConfirmed) {
                 setUsername(nuovoUsername);
+                cambiaUsername();
+                successo();
 
             }else{
                 setNuovoUsername(username);
@@ -59,9 +82,29 @@ function Dati_utente ({ username, setUsername /*, email */ }) {
         });
     };
 
+    const successo = () => {
+        Swal.fire({
+            title: 'Modificato!',
+            text: "Username modificato con successo",
+            icon: 'success',
+            showCancelButton: false,
+            showConfirmButton: false,
+            timer: '1000'
+        });
+    }
+    const avviso = (text) => {
+        Swal.fire({
+            text: text,
+            icon: 'error',
+            showCancelButton: false,
+            confirmButtonColor: '#246779',
+            confirmButtonText:'Chiudi'
+        });
+    }
+
     return (
         <div className="dati">
-            <label htmlFor="">email {/*email*/} </label>
+            <label htmlFor=""> {email} </label>
             <div>
                 <img src="/pen_icon.png" alt="" />
                 <input className="username" type="text" name="" id="" value={nuovoUsername} onChange={e => ChangeUsername(e.target.value)}/>

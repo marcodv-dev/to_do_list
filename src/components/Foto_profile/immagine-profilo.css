@@ -10,6 +10,7 @@
         object-fit: cover;
         object-position: center;
         background-color: white;
+        border: 1px solid white;
         border-radius: 50%;
     }
     .modifica_foto{
