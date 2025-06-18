@@ -1,8 +1,7 @@
 
 import './immagine-profilo.css'
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useRef } from 'react';
-import { UserContext } from '../../Contexts/UserContext';
 import Swal from 'sweetalert2';
 
 function Foto_profilo ( {fotoURL , setFotoURL, email} ) {

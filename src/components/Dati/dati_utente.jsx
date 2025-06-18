@@ -30,6 +30,42 @@ function Dati_utente ({ username, setUsername , email }) {
         });
     }
 
+
+    const elimina_utente = () => {
+        Swal.fire({
+            title: 'Elimina Account',
+            text: 'Sicuro di voler eliminare l\'account? Tutti i dati andranno persi.',
+            icon: 'question',
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonColor: 'rgb(191, 0, 0)',
+            cancelButtonColor: '#246779',
+            confirmButtonText: 'Si, elimina',
+            cancelButtonText: 'Annulla'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:3001/utente/elimina/${encodeURIComponent(email)}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Errore nella modifica');
+                    }
+                console.log("si")
+                    return response.json();
+                })
+                .then(() => {
+                    successo('Eliminato','Account eliminato con successo!');
+                    navigate("/");
+                })
+                .catch((error) => {
+                    console.error(error);
+                    avviso('Errore durante l\'aggiornamento dell\'utente.');
+                });
+            }
+        });
+    }
+
     const ChangeUsername = (nuovo) => {
         setNuovoUsername(nuovo);
         if(nuovo!==username && nuovo!==''){
@@ -52,7 +88,7 @@ function Dati_utente ({ username, setUsername , email }) {
             return response.json();
         })
         .then(() => {
-            successo('Username aggiornato con successo!');
+            successo('Modificato','Username aggiornato con successo!');
         })
         .catch((error) => {
             console.error(error);
@@ -73,7 +109,7 @@ function Dati_utente ({ username, setUsername , email }) {
             if (result.isConfirmed) {
                 setUsername(nuovoUsername);
                 cambiaUsername();
-                successo();
+                successo('Modificato', 'Utente modificato coon successo');
 
             }else{
                 setNuovoUsername(username);
@@ -82,10 +118,10 @@ function Dati_utente ({ username, setUsername , email }) {
         });
     };
 
-    const successo = () => {
+    const successo = (title, text) => {
         Swal.fire({
-            title: 'Modificato!',
-            text: "Username modificato con successo",
+            title: title,
+            text: text,
             icon: 'success',
             showCancelButton: false,
             showConfirmButton: false,
@@ -114,6 +150,7 @@ function Dati_utente ({ username, setUsername , email }) {
             </div>
             
             <input className="logout" onClick={logout} type="button" value="Logout"/>
+            <input className="elimina-utente" onClick={elimina_utente} type="button" value="Elimina account"/>
         </div>
     );
 }
