@@ -7,83 +7,62 @@ import Swal from 'sweetalert2';
 function Foto_profilo ( {fotoURL , setFotoURL, email} ) {
 
     const [mostraModifica, setMostraModifica] = useState(false);
+    const fileInputRef = useRef(null);
 
-    const eliminatoSuccesso = () => {
-        Swal.fire({
-            title: 'Eliminato!',
-            text: "Elemento eliminato con successo",
-            icon: 'success',
-            showCancelButton: false,
-            showConfirmButton: false,
-            timer: '1000'
-        });
-    }
-    const caricatoSuccesso = () => {
-        Swal.fire({
-            title: 'Caricata!',
-            text: "Elemento caricato con successo",
-            icon: 'success',
-            showCancelButton: false,
-            showConfirmButton: false,
-            timer: '1000'
-        });
-    }
+    
+    //FINESTRA INPUT FILE
+    const handleClick = () => {
+        fileInputRef.current.click(); 
+    };
 
-    //MODIFICA FOTO--------------------------------------------------------------------------------------------------------
+    //MOSTRA CONFERMA MODIFICA FOTO
     const modifica = () => {
         setMostraModifica(true);
     }
 
-    //cabia foto
-    const handleClick = () => {
-        // apre la finestra di selezione file
-        fileInputRef.current.click(); 
-    };
+    //ESCI MODIFICA FOTO
+    const indietro_foto = () => {
+        setMostraModifica(false);
+    }
 
+    //MODIFICA FOTO
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setMostraModifica(false);
         if (file) {
             Swal.fire({
-                        title: 'Cambia foto profilo',
-                        text: 'Sicuro di voler cambiare la foto profilo?',
-                        icon: 'question',
-                        focusConfirm: false,
-                        showCancelButton: true,
-                        confirmButtonColor: '#246779',
-                        cancelButtonColor: '#246779',
-                        confirmButtonText: 'Si, cambia',
-                        cancelButtonText: 'Annulla'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            const formData = new FormData();
-                            formData.append('foto', file);
+                title: 'Cambia foto profilo',
+                text: 'Sicuro di voler cambiare la foto profilo?',
+                icon: 'question',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonColor: '#246779',
+                cancelButtonColor: '#246779',
+                confirmButtonText: 'Si, cambia',
+                cancelButtonText: 'Annulla'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const formData = new FormData();
+                    formData.append('foto', file);
+                    
+                    fetch(`http://localhost:3001/utente/foto/${email}`, {
+                        method: 'PUT',
+                        body: formData
+                    })
+                    .then(res => res.json())
+                    .then(data => setFotoURL(data.fotoURL))
+                    .catch(err => console.error('Errore durante il salvataggio della foto:', err));
 
-                            // Salva la foto localmente per visualizzarla subito
-                            caricatoSuccesso();
-
-                            // Salva la foto nel database
-                            fetch(`http://localhost:3001/utente/foto/${email}`, {
-                                method: 'PUT',
-                                body: formData
-                            })
-                            .then(res => res.json())
-                            .then(data => {
-                                setFotoURL(data.fotoURL);
-                            })
-                            .catch(err => console.error('Errore durante il salvataggio della foto:', err));
-                        }
-                    });
+                    caricatoSuccesso();
+                }
+            });
         }
     };
 
-    const fileInputRef = useRef(null);
-
-    //elimina foto
+    //ELIMINA FOTO
     const elimina_foto = () => {
         if(fotoURL !== ""){
             setMostraModifica(false);
-
             Swal.fire({
                 title: 'Elimina foto profilo',
                 text: 'Sicuro di voler eliminare la foto profilo?',
@@ -98,39 +77,47 @@ function Foto_profilo ( {fotoURL , setFotoURL, email} ) {
                 if (result.isConfirmed) {
                     setFotoURL("");
                     eliminatoSuccesso();
-
-                    // Salva la foto predefinita nel database
+                    
                     fetch(`http://localhost:3001/utente/foto/${email}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ foto: '' }) // Puoi decidere di salvare '' o 'profile_icon.png'
+                        body: JSON.stringify({ foto: '' })
                     })
                     .then(res => res.json())
-                    //.then(data => console.log(data))
                     .catch(err => console.error('Errore durante l\'eliminazione della foto:', err));        
                 }
             });
-
-            
-            }
+        }
     }
     
-
-    //esci modifica foto
-    const indietro_foto = () => {
-        setMostraModifica(false);
+    //ELIMINATO SUCCESSO
+    const eliminatoSuccesso = () => {
+        Swal.fire({
+            title: 'Eliminato!',
+            text: "Elemento eliminato con successo",
+            icon: 'success',
+            showCancelButton: false,
+            showConfirmButton: false,
+            timer: '1000'
+        });
     }
 
-    //------------------------------------------------------------------------------------------------------------------------------------------------------
-    //------------------------------------------------------------------------------------------------------------------------------------------------------
+    //CARICATO SUCCESSO
+    const caricatoSuccesso = () => {
+        Swal.fire({
+            title: 'Caricata!',
+            text: "Elemento caricato con successo",
+            icon: 'success',
+            showCancelButton: false,
+            showConfirmButton: false,
+            timer: '1000'
+        });
+    }
+    
     return (
         <div className="foto">
-            {/* {fotoURL && ( */}
-                <img className="immagine_profilo" src={fotoURL ? `http://localhost:3001${fotoURL}` : '/profile_icon.png'} alt="" />
-            {/* )} */}
+            <img className="immagine_profilo" src={fotoURL ? `http://localhost:3001${fotoURL}` : '/profile_icon.png'} alt="" />
             <button className="modifica_foto" onClick={modifica}>Modifica foto profilo</button>
-            {/* <input type="file" name="foto" id="" /> */}
-
 
             {mostraModifica && (
                 <div className="modale-conferma"
@@ -169,7 +156,6 @@ function Foto_profilo ( {fotoURL , setFotoURL, email} ) {
                                 background:'none'
                             }}><img src="x_icon.png" alt="" style={{width:'20px'}}/></button>
                         </div>
-                        {/* {fotoURL && ( */}
                             <img style={{
                             margin:'40px auto',
                             height:'300px',
@@ -178,11 +164,9 @@ function Foto_profilo ( {fotoURL , setFotoURL, email} ) {
                             objectFit: 'cover',
                             objectPosition: 'center'
                         }} src={fotoURL ? `http://localhost:3001${fotoURL}` : '/profile_icon.png'} alt="" />
-                         {/* )} */}
                         <div style={{
                             display:'flex',
                             }}>
-
                             <input
                                 type="file"
                                 accept="image/*"
@@ -199,7 +183,6 @@ function Foto_profilo ( {fotoURL , setFotoURL, email} ) {
                                 border:'none',
                                 color:'black'
                             }}>Carica una nuova foto</button>
-
                             <button onClick={elimina_foto} style={{
                                 margin:'auto',
                                 padding:'10px 10px',

@@ -4,14 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 function Navbar () {
 
-
     const navigate = useNavigate();
 
-    //pertornare alla dashboard
+    //INDIETRO DASHBOARD
     const indietro = () => {
         navigate("/Dashboard");
-   }
-
+    }
 
     return(
         <div className="navbar">
@@ -22,6 +20,4 @@ function Navbar () {
         </div>
     );
 }
-
-
 export default Navbar;

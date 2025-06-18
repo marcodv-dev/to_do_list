@@ -1,24 +1,18 @@
 
-import { useState } from 'react';
 import './attivita.css'
 
 function Activity ({ nome, categoria_id, data, categoriaAttiva, checked, onToggle, onElimina, modificaAttivita, categorie }) {
 
     const nomeCategoria = categorie.find(cat => cat.id === categoria_id)?.nome || '';
-
-    //const [check_1, setCheck_1] = useState(false);
-    
     
     return (
         <div className="activity">
             <div className="categoria-activity">
                 <h3>{!categoriaAttiva || categoriaAttiva === 'mancanti'? nomeCategoria : '' }</h3>
-                <label htmlFor="data">{data.toLocaleDateString()}</label>
+                <label htmlFor="data">{(new Date(data).toLocaleDateString('it-IT', { day: '2-digit', month: 'numeric', year: 'numeric' }))}</label>
             </div>
             <div className="main-activity">
                 <div className="sinistra">
-                    {/* <input type="checkbox" name=""  id="mycheckbox" /> */}
-                    {/* <div class="check"><img src="/trash_icon.png" alt="" /></div> */}
                     <input 
                         type="checkbox"
                         className="check"

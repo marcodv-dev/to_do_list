@@ -4,52 +4,40 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from 'react';
 import { UserContext } from '../../Contexts/UserContext';
 import Swal from "sweetalert2";
-
 import './Registrazione.css'
 
 function Registration() {
 
   const navigate = useNavigate();
   const { setEmail } = useContext(UserContext);
-
-  const {username, setUsername} = /*useState("")*/ useContext(UserContext);
-
+  const {username, setUsername} = useContext(UserContext);
   const [password, setPassword] = useState("");
   const [email_temp, setEmail_temp] = useState("");
   const [error, setError] = useState("");
   
-
-  // Condizione per abilitare il bottone
+//CONDIZIONE ABILITARE CONFERMA
   const isButtonDisabled = !username.trim() || !password.trim();
   
   const Registrati = () => {
-  
-    const avviso = (text) => {
-      Swal.fire({
-        text: text,
-        icon: 'error',
-        showCancelButton: false,
-        confirmButtonColor: '#246779',
-        confirmButtonText:'Chiudi'
-      });
-    }
 
+    //CONTROLLO USERNAME
     if (username.includes(' ')) {
       avviso('Lo username non può contenere spazi');
       return;
     }
 
+    //CONTROLLO E-MAIL
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (!emailRegex.test(email_temp)) {
         avviso('Inserisci una email valida');
         return;
     }
 
-    fetch('http://localhost:3001/register', {  // metti qui l'URL del tuo server backend
+    //REGISTRAZIONE UTENTE
+    fetch('http://localhost:3001/register', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ email_temp, username, password }),
     })
@@ -69,6 +57,16 @@ function Registration() {
     });
   };
 
+  const avviso = (text) => {
+    Swal.fire({
+      text: text,
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonColor: '#246779',
+      confirmButtonText:'Chiudi'
+    });
+  }
+  
   return (
     <div className="Register-page">
       <div className="Register-class">
@@ -95,7 +93,4 @@ function Registration() {
     </div>
   );
 }
-
-
-
 export default Registration;

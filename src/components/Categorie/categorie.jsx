@@ -6,12 +6,19 @@ import { useEffect, useState } from 'react';
 
 function Categorie ({ categorie, onClickCategoria, onAggiungiCategoria, onRimuoviCategoria, onModificaCategoria, avviso }) {
 
-    const aggiungiCategoria = () => {
+    //MOSTRO LE CATEGORIE
+    const [mostraTutte, setMostraTutte] = useState (false);
+    useEffect(() => {
+        if (categorie.length === 0) setMostraTutte(false);
+        else setMostraTutte(true);
+    }, [categorie.length]);
 
+    //AGGIUNGO CATEGORIA
+    const aggiungiCategoria = () => {
         Swal.fire({
             title: 'Nuova categoria',
             text: "Inserisci il nome della nuova categoria:",
-            input: 'text', // <-- aggiunto input
+            input: 'text',
             inputPlaceholder: 'Categoria',
             showCancelButton: true,
             confirmButtonColor: '#246779',
@@ -19,40 +26,18 @@ function Categorie ({ categorie, onClickCategoria, onAggiungiCategoria, onRimuov
             confirmButtonText: 'Aggiungi',
             cancelButtonText: 'Annulla',
             inputValidator: (value) => {
-                if (!value) {
-                    return 'Devi scrivere qualcosa!';
-                }
-                return null; // Se tutto va bene
+                if (!value) return 'Devi scrivere qualcosa!';
+                return null;
             }
         }).then((result) => {
-
             const nomeInserito = result.value;
-            
-            if (nomeInserito && nomeInserito.trim() !== '') { // se ha inserito qualcosa
-
+            if (nomeInserito && nomeInserito.trim() !== '') {                               // se ha inserito qualcosa
                 const nomePulito = nomeInserito.trim();
-
-                if (!categorie.includes(nomePulito)) { // se non esiste un'altra con lo stesso nome
-                    onAggiungiCategoria(nomePulito);
-                } else {
-                    avviso('Questa categoria esiste già!');
-                }
+                if (!categorie.includes(nomePulito)) onAggiungiCategoria(nomePulito);       // se non esiste un'altra con lo stesso nome
+                else avviso('Questa categoria esiste già!');
             }
         });
-
-        
     };
-
-    const [mostraTutte, setMostraTutte] = useState (false);
-
-    useEffect(() => {
-        if (categorie.length === 0) {
-            setMostraTutte(false);
-        }else{
-            setMostraTutte(true);
-        }
-    }, [categorie.length]);
-
 
     return(
         <div className="categorie">
@@ -63,9 +48,8 @@ function Categorie ({ categorie, onClickCategoria, onAggiungiCategoria, onRimuov
                         <h2>Tutte le categorie</h2>
                     </div>
                 )}
-
                 {categorie.map((categoria) => (
-                    <div key={categoria.id} /*onClick={() => onClickCategoria(nome)}*/>
+                    <div key={categoria.id}>
                         <Categoria 
                         nome={categoria.nome} 
                         onElimina={() => onRimuoviCategoria(categoria,"categoria")}

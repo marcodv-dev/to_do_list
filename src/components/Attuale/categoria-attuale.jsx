@@ -11,38 +11,39 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
     const [dataSelezionata, setDataSelezionata] = useState('')
     const [categoriaSelezionata, setCategoriaSelezionata] = useState(categoriaAttiva ? categoriaAttiva : (categorieDisponibili[0] || null))
 
-
-
-    // Aggiorna categoria preselezionata nel select quando cambia la prop
+    //AGGIORNA CATEGORIA PRESELEZIONATA SELECT
     useEffect(() => {
-        if (categoriaAttiva) {
-            //preseleziona categoriaAttuale
-            setCategoriaSelezionata(categoriaAttiva);
-        } else if (categorieDisponibili.length > 0) {
-            // Se non c'è categoria attiva, seleziona la prima disponibile
-            setCategoriaSelezionata(categorieDisponibili[0]);
-        } else {
-            setCategoriaSelezionata(null); // Nessuna categoria disponibile
-        }
+        if(categoriaAttiva) setCategoriaSelezionata(categoriaAttiva);
+        else if (categorieDisponibili.length > 0) setCategoriaSelezionata(categorieDisponibili[0]);
+        else setCategoriaSelezionata(null);
     }, [categoriaAttiva, categorieDisponibili]);
 
-    //button +
+    //NUOVA ATTIVITÀ - APRI MODALE
     const apriModale = () => {
-        setNomeAttivita('')
-        // setCategoriaSelezionata(() => { 
-        //     if(categoriaAttiva && categoriaAttiva !== "mancanti")
-        //         return "";
-            
-        // });
+        setNomeAttivita('');
         setCategoriaSelezionata(categoriaAttiva && categoriaAttiva !== "mancanti" ? categoriaAttiva : categorieDisponibili[0] || null)
         setMostraModale(true)
     }
     
+    //NUOVA ATTIVITÀ - CHIUDI MODALE
     const chiudiModale = () => {
         setMostraModale(false)
         setDataSelezionata('')
     }
 
+    //AGGIUNGI NUOVA ATTIVITÀ
+    const confermaAggiunta = () => {
+        if(categoriaSelezionata!==''){                  // se c'è una categoria selezionata
+            if (nomeAttivita.trim() !== '') {           // se ha inserito un nome per l'attività
+                if (dataSelezionata !== '') {           // se ha selezionato una data
+                    onAggiungiAttivita(nomeAttivita.trim(), categoriaSelezionata, dataSelezionata);
+                    chiudiModale();
+                } else avviso("Seleziona una data per l'attività!");
+            } else avviso("Inserisci un nome per l'attività!");
+        } else avviso("Crea prima una categoria a cui assegnare questa attività!");
+    }
+
+    //AVVISO
     const avviso = (text) => {
         Swal.fire({
             title: 'Elementi mancanti!',
@@ -53,37 +54,11 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
             confirmButtonText: 'Chiudi',
         });
     }
-
-    // Quando l'utente conferma, invia i dati al genitore
-    const confermaAggiunta = () => {
-        if(categoriaSelezionata!==''){  // se c'è una categoria selezionata
-        
-            if (nomeAttivita.trim() !== '') {   // se ha inserito un nome per l'attività
-
-                if (dataSelezionata !== '') {   // se ha selezionato una data
-                    onAggiungiAttivita(nomeAttivita.trim(), categoriaSelezionata, dataSelezionata);
-                    chiudiModale();
-                }
-                else{
-                    avviso("Seleziona una data per l'attività!");
-                }
-            } else {
-                avviso("Inserisci un nome per l'attività!");
-            }
-        }
-        else{
-            avviso("Crea prima una categoria a cui assegnare questa attività!");
-        }
-    }
-
-
+    
     return(
         <div className='attuale'>
             <h1>{categoriaAttiva && categoriaAttiva.nome? categoriaAttiva.nome : categoriaAttiva || ''}</h1> 
             <button className="button-plus" onClick={apriModale}><img src="/plus_icon.png" alt="" /></button>
-
-
-            {/* Modale */}
             {mostraModale && (
                 <div className="modale-conferma"
                     style={{
@@ -108,8 +83,6 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
                             textAlign:'center',
                             marginBottom:'40px'
                         }}>Nuova attività</h2>
-
-                        {/* Input nome attività */}
                         <input
                             type="text"
                             placeholder="Nome attività"
@@ -126,8 +99,6 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
                                 outline:'none'
                             }}
                         />
-
-                        {/* Select per categoria (default: categoriaAttuale) */}
                         <select
                             value={categoriaSelezionata? JSON.stringify(categoriaSelezionata) : ''}
                             onChange={(e) => {
@@ -151,14 +122,10 @@ function Categoria_attuale ({ categoriaAttiva, onAggiungiAttivita, categorieDisp
                                 </option>
                             ))}
                         </select>
-                        
-                        {/* calendario per selezionare una data */}
                         <div className='calendrio-nuova-attivita'>
                             <label htmlFor="data">Seleziona data:</label>
                             <Calendario dataSelezionata={dataSelezionata} setDataSelezionata={(data)=>setDataSelezionata(data)} nuova={false}/>
                         </div>
-
-                        {/* Pulsanti di conferma e annulla */}
                         <div style={{
                             display: 'flex',
                             justifyContent:'space-between',

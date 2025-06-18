@@ -10,23 +10,17 @@ function Login() {
 
   const navigate = useNavigate();
   const { setEmail } = useContext(UserContext);
-
   const {username, setUsername} = /*useState("")*/ useContext(UserContext);
-
   const [password, setPassword] = useState("");
   const [email_temp, setEmail_temp] = useState("");
   const [error, setError] = useState("");
 
-
-  
-
-  
-  // Condizione per abilitare il bottone
+  //CONDIZIONE ABILITARE CONFERMA
   const isButtonDisabled = !username.trim() || !password.trim();
   
+  //LOGIN
   const Loggati = () => {
-
-    fetch('http://localhost:3001/login', {  // metti qui l'URL del tuo server backend
+    fetch('http://localhost:3001/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,9 +28,7 @@ function Login() {
       body: JSON.stringify({ email_temp, username, password }),
     })
     .then(res => {
-      if (!res.ok) {
-        throw new Error('Credenziali non valide');
-      }
+      if (!res.ok) throw new Error('Credenziali non valide');
       return res.json();
     })
     .then(data => {
@@ -77,7 +69,4 @@ function Login() {
     </div>
   );
 }
-
-
-
 export default Login;

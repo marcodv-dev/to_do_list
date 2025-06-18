@@ -10,9 +10,8 @@ function Dati_utente ({ username, setUsername , email }) {
     const [mostraConferma, setMostraConferma] = useState(false);
     const [nuovoUsername, setNuovoUsername] = useState(username);
 
-
+    //LOGOUT
     const logout = () =>{
-        
         Swal.fire({
             title: 'Logout',
             text: 'Sicuro di voler uscire?',
@@ -24,13 +23,58 @@ function Dati_utente ({ username, setUsername , email }) {
             confirmButtonText: 'Si, esci',
             cancelButtonText: 'Annulla'
         }).then((result) => {
-            if (result.isConfirmed) {
-                navigate("/");
-            }
+            if (result.isConfirmed) navigate("/");
         });
     }
 
+    //MOSTRA CAMBIO USERNAME
+    const ChangeUsername = (nuovo) => {
+        setNuovoUsername(nuovo);
+        if(nuovo!==username && nuovo!=='') setMostraConferma(true);
+        else setMostraConferma(false);
+    }
 
+    //CONFERMA CAMBIO USERNAME
+    const cambiaUsername = () => {
+        fetch(`http://localhost:3001/utente/aggiorna/${encodeURIComponent(email)}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: nuovoUsername })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Errore nella modifica');
+            return response.json();
+        })
+        .then(() => {
+            successo('Modificato','Username aggiornato con successo!');
+        })
+        .catch((error) => {
+            console.error(error);
+            avviso('Errore durante l\'aggiornamento dell\'utente.');
+        });
+    }
+
+    //CAMBIA USERNAME
+    const confermaUsername = () => {
+        Swal.fire({
+            text: "Sicuro di voler cambiare il tuo Username?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#246779',
+            cancelButtonColor: '#246779',
+            confirmButtonText: 'Sì, cambia',
+            cancelButtonText: 'Annulla'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setUsername(nuovoUsername);
+                cambiaUsername();
+                successo('Modificato', 'Utente modificato coon successo');
+            }else setNuovoUsername(username);
+            setMostraConferma(false);
+        });
+    };
+    
+    //ELIMINA UTENTE
     const elimina_utente = () => {
         Swal.fire({
             title: 'Elimina Account',
@@ -48,11 +92,8 @@ function Dati_utente ({ username, setUsername , email }) {
                     method: 'DELETE'
                 })
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Errore nella modifica');
-                    }
-                console.log("si")
-                    return response.json();
+                    if (!response.ok) throw new Error('Errore nella modifica');
+                return response.json();
                 })
                 .then(() => {
                     successo('Eliminato','Account eliminato con successo!');
@@ -66,58 +107,7 @@ function Dati_utente ({ username, setUsername , email }) {
         });
     }
 
-    const ChangeUsername = (nuovo) => {
-        setNuovoUsername(nuovo);
-        if(nuovo!==username && nuovo!==''){
-            setMostraConferma(true);
-        }else{
-            setMostraConferma(false);
-        }
-    }
-
-    const cambiaUsername = () => {
-        fetch(`http://localhost:3001/utente/aggiorna/${encodeURIComponent(email)}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: nuovoUsername })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Errore nella modifica');
-            }
-            return response.json();
-        })
-        .then(() => {
-            successo('Modificato','Username aggiornato con successo!');
-        })
-        .catch((error) => {
-            console.error(error);
-            avviso('Errore durante l\'aggiornamento dell\'utente.');
-        });
-    }
-
-    const confermaUsername = () => {
-        Swal.fire({
-            text: "Sicuro di voler cambiare il tuo Username?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#246779',
-            cancelButtonColor: '#246779',
-            confirmButtonText: 'Sì, cambia',
-            cancelButtonText: 'Annulla'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                setUsername(nuovoUsername);
-                cambiaUsername();
-                successo('Modificato', 'Utente modificato coon successo');
-
-            }else{
-                setNuovoUsername(username);
-            }
-            setMostraConferma(false);
-        });
-    };
-
+    //SUCCESSO
     const successo = (title, text) => {
         Swal.fire({
             title: title,
@@ -128,6 +118,8 @@ function Dati_utente ({ username, setUsername , email }) {
             timer: '1000'
         });
     }
+
+    //AVVISO
     const avviso = (text) => {
         Swal.fire({
             text: text,
@@ -141,18 +133,18 @@ function Dati_utente ({ username, setUsername , email }) {
     return (
         <div className="dati">
             <label htmlFor=""> {email} </label>
-            <div>
+            <div className='username-d'>
                 <img src="/pen_icon.png" alt="" />
                 <input className="username" type="text" name="" id="" value={nuovoUsername} onChange={e => ChangeUsername(e.target.value)}/>
                 {mostraConferma && (
                     <button onClick={confermaUsername}>Conferma</button>
                 )}
             </div>
-            
-            <input className="logout" onClick={logout} type="button" value="Logout"/>
-            <input className="elimina-utente" onClick={elimina_utente} type="button" value="Elimina account"/>
+            <div className='esci-d'>
+                <input className="logout" onClick={logout} type="button" value="Logout"/>
+                <input className="elimina-utente" onClick={elimina_utente} type="button" value="Elimina account"/>
+            </div>
         </div>
     );
 }
-
 export default Dati_utente;

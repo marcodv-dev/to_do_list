@@ -11,7 +11,7 @@
         font-size: 30px;
         color: white;
     }
-    >div{
+    >.username-d{
         background-color: white;
         display: flex;
         border-radius: 1em;
@@ -31,6 +31,10 @@
             border-left: 1px solid gray;
         }
     }
+    .esci-d{
+        display: flex;
+        justify-content: space-between;
+    }
     .username{
         outline: none;
         border: none;
@@ -45,7 +49,7 @@
         opacity: 1;
     }
 
-    .logout{
+    .logout,.elimina-utente{
         margin: auto;
         font-size: 20px;
         padding: 5px 10px;
@@ -55,7 +59,7 @@
         border-radius: 0.5em;
         transition: 0.3s ease;
     }
-    .logout:hover{
+    .logout:hover, .elimina-utente:hover{
         background-color: rgb(227, 227, 227);
         color: black;
         border-color: black;
